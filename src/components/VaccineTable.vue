@@ -78,7 +78,7 @@ const statusClass = (status) => {
             </td>
             <td class="px-6 py-4">
 
-              <RouterLink :to="`/patient/${vaccine.id}`">
+              <RouterLink :to="`/patient`">
                 <button class="px-6 py-2 text-white bg-yellow-500 hover:bg-yellow-600 rounded-lg shadow-md
                 transition-all duration-200 transform hover:scale-105">
                   รายละเอียดผู้รับวัคซีน

@@ -10,7 +10,7 @@ const router = createRouter({
       component: VaccineTable,
     },
     {
-      path: '/patient/:id',
+      path: '/patient',
       name: 'patient',
       component: () => import('../views/DetailsRecipientView.vue'),
       props: true, // ทำให้รับ id เป็น prop ใน Vue component
@@ -19,3 +19,4 @@ const router = createRouter({
 })
 
 export default router
+9

@@ -1,5 +1,46 @@
+<template>
+  <div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-200 dark:from-slate-800 dark:to-slate-900 text-slate-800 dark:text-white p-6 font-kanit">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-3xl sm:text-4xl font-bold text-center mb-10">
+        💉 รายการวัคซีนที่ให้บริการ
+      </h1>
+
+      <div class="space-y-6">
+        <div
+          v-for="(vaccine, index) in vaccines"
+          :key="vaccine.id"
+          class="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-2xl shadow-md p-6 transition hover:shadow-xl"
+        >
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <h2 class="text-xl sm:text-2xl font-semibold">
+              {{ index + 1 }}. {{ vaccine.name }}
+            </h2>
+            <span :class="statusClass(vaccine.status)">
+              {{ vaccine.status }}
+            </span>
+          </div>
+
+          <div class="text-base mt-3 space-y-1 leading-relaxed">
+            <p><span class="font-medium">📅 เริ่ม:</span> {{ vaccine.startDate }}</p>
+            <p><span class="font-medium">📆 สิ้นสุด:</span> {{ vaccine.endDate }}</p>
+          </div>
+
+          <div class="mt-5 text-right">
+            <RouterLink :to="`/vaccine/${vaccine.id}`">
+              <button class="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-2 px-4 rounded-lg shadow hover:scale-105 transition">
+                🔍 รายละเอียดผู้รับวัคซีน
+              </button>
+            </RouterLink>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
 <script setup>
-import { ref } from 'vue';
+import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
 
 const vaccines = ref([
   {
@@ -23,76 +64,26 @@ const vaccines = ref([
     endDate: '2025-06-15',
     status: 'เปิดจอง',
   },
-]);
+])
 
 const statusClass = (status) => {
   switch (status) {
     case 'เปิดจอง':
-      return 'bg-green-500 text-white px-2 py-1 rounded-full';
+      return 'bg-green-100 text-green-800 dark:bg-green-600 dark:text-white px-4 py-1 rounded-full text-sm sm:text-base font-semibold';
     case 'ปิดจอง':
-      return 'bg-gray-500 text-white px-2 py-1 rounded-full';
+      return 'bg-gray-200 text-gray-700 dark:bg-gray-600 dark:text-white px-4 py-1 rounded-full text-sm sm:text-base font-semibold';
     case 'ยกเลิก':
-      return 'bg-red-500 text-white px-2 py-1 rounded-full';
+      return 'bg-red-100 text-red-800 dark:bg-red-600 dark:text-white px-4 py-1 rounded-full text-sm sm:text-base font-semibold';
     default:
       return '';
   }
-};
-
+}
 </script>
 
 <style scoped>
-         @import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;600&display=swap');
 
-      #app {
-        font-family: "Kanit", sans-serif;
-        justify-content: center;
-      }
+.font-kanit {
+  font-family: 'Kanit', sans-serif;
+}
 </style>
-
-<template>
-  <div class="container mx-auto p-6 ">
-    <h2 class="text-3xl font-semibold mb-6 text-center text-gray-200">รายการวัคซีนที่เปิดจอง</h2>
-
-    <div class="overflow-x-auto bg-white rounded-lg shadow-lg mb-3">
-      <table class="min-w-full table-auto border-separate border-spacing-0">
-        <thead class="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
-          <tr>
-            <th class="px-6 py-3 text-left text-lg font-semibold">หมายเลข</th>
-            <th class="px-6 py-3 text-left text-lg font-semibold">ชื่อวัคซีน</th>
-            <th class="px-6 py-3 text-left text-lg font-semibold">วันที่เปิดจอง</th>
-            <th class="px-6 py-3 text-left text-lg font-semibold">วันที่สิ้นสุด</th>
-            <th class="px-10 py-3 text-left text-lg font-semibold">สถานะ</th>
-            <th class="px-6 py-3 text-left text-lg font-semibold">การจัดการ</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(vaccine, index) in vaccines" :key="vaccine.id" class="border-t hover:bg-gray-50 text-black font-semibold">
-            <td class="px-6 py-4 text-lg">{{ index + 1 }}</td>
-            <td class="px-6 py-4 text-lg">{{ vaccine.name }}</td>
-            <td class="px-6 py-4 text-lg">{{ vaccine.startDate }}</td>
-            <td class="px-6 py-4 text-lg">{{ vaccine.endDate }}</td>
-            <td class="px-6 py-4">
-              <span :class="statusClass(vaccine.status)">
-                {{ vaccine.status }}
-              </span>
-            </td>
-            <td class="px-6 py-4">
-
-              <RouterLink :to="`/patient`">
-                <button class="px-6 py-2 text-white bg-yellow-500 hover:bg-yellow-600 rounded-lg shadow-md
-                transition-all duration-200 transform hover:scale-105">
-                  รายละเอียดผู้รับวัคซีน
-                </button>
-              </RouterLink>
-
-
-
-
-
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</template>

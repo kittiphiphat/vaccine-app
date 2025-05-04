@@ -10,11 +10,10 @@ const router = createRouter({
       component: VaccineTable,
     },
     {
-      path: '/patient',
-      name: 'patient',
-      component: () => import('../views/DetailsRecipientView.vue'),
-      props: true, // ทำให้รับ id เป็น prop ใน Vue component
-    },
+      path: '/vaccine/:id',
+      name: 'vaccineDetail',
+      component: () => import('../views/VaccineDetailView.vue') // ชี้ไปที่หน้าใหม่
+    }
   ],
 })
 

@@ -137,7 +137,7 @@ const saveEdit = () => {
                 <div>
                   <h2 class="text-lg font-semibold">{{ patient.name }}</h2>
                   <p class="text-sm">📅 วันที่จอง: {{ patient.date }}</p>
-                  <p class="text-xs text-gray-500">รหัส: #{{ patient.id }} | เพศ: {{ patient.gender }}</p>
+                  <p class="text-xs text-gray-300">รหัส: #{{ patient.id }} | เพศ: {{ patient.gender }}</p>
                 </div>
                 <div class="flex gap-2">
                   <button @click="startEdit(patient)" class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded text-sm">✏ แก้ไข</button>

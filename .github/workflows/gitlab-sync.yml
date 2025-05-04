@@ -1,0 +1,21 @@
+name: Sync to GitLab
+
+on:
+  push:
+    branches:
+      - main  # เปลี่ยนเป็น dev ถ้าใช้ branch อื่น
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Push to GitLab
+        run: |
+          git config --global user.name "GitHub Mirror Bot"
+          git config --global user.email "mirror@example.com"
+          
+          git remote add gitlab https://oauth2:${{ secrets.GITLAB_TOKEN }}@gitlab.com/kittiphphipat/vaccine-app.git
+          git push --mirror gitlab

@@ -76,7 +76,7 @@ const saveEdit = () => {
 <template>
   <div class="min-h-screen bg-slate-50 dark:bg-slate-900 p-6 font-kanit text-slate-800 dark:text-white print:bg-white">
     <div class="max-w-4xl mx-auto space-y-6">
-      <!-- ถ้าสถานะ != เปิดจอง -->
+
       <div v-if="vaccineStatus !== 'เปิดจอง'" class="text-center text-lg mt-32 text-red-600 dark:text-red-400">
         🚫 ไม่สามารถเข้าดูข้อมูลได้ เนื่องจากวัคซีน "{{ vaccineName }}" ถูก {{ vaccineStatus }}
         <div class="mt-4">
@@ -86,7 +86,7 @@ const saveEdit = () => {
         </div>
       </div>
 
-      <!-- ถ้าเปิดจอง -->
+
       <div v-else>
         <div class="flex items-center justify-between">
           <h1 class="text-2xl sm:text-3xl font-bold">

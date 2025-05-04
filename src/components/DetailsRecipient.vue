@@ -9,6 +9,8 @@ const vaccineId = route.params.id
 const vaccineName = ref('')
 const keyword = ref('')
 const patientList = ref([])
+const editingId = ref(null)
+const editData = ref({ id: null, name: '', date: '', gender: '' })
 
 onMounted(() => {
   switch (vaccineId) {
@@ -48,11 +50,28 @@ const filteredPatients = computed(() => {
 const goBack = () => router.back()
 
 const exportPDF = () => {
-  window.print() // สำหรับ mock PDF ใน browser
+  window.print()
 }
 
 const deletePatient = (id) => {
   patientList.value = patientList.value.filter(p => p.id !== id)
+}
+
+const startEdit = (patient) => {
+  editingId.value = patient.id
+  editData.value = { ...patient }
+}
+
+const cancelEdit = () => {
+  editingId.value = null
+}
+
+const saveEdit = () => {
+  const index = patientList.value.findIndex(p => p.id === editData.value.id)
+  if (index !== -1) {
+    patientList.value[index] = { ...editData.value }
+  }
+  editingId.value = null
 }
 </script>
 
@@ -84,21 +103,38 @@ const deletePatient = (id) => {
           v-for="patient in filteredPatients"
           :key="patient.id"
           :class="[
-            'border rounded-xl p-5 shadow-sm flex justify-between items-center',
+            'border rounded-xl p-5 shadow-sm space-y-2',
             patient.gender === 'ชาย'
               ? 'bg-blue-50 border-blue-300 dark:bg-blue-900 dark:border-blue-700'
               : 'bg-pink-50 border-pink-300 dark:bg-pink-900 dark:border-pink-700'
           ]"
         >
-          <div>
-            <h2 class="text-lg font-semibold">{{ patient.name }}</h2>
-            <p class="text-sm">📅 วันที่จอง: {{ patient.date }}</p>
-            <p class="text-xs text-gray-500">รหัส: #{{ patient.id }} | เพศ: {{ patient.gender }}</p>
-          </div>
-          <div class="flex gap-2">
-            <button class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded text-sm">✏ แก้ไข</button>
-            <button @click="deletePatient(patient.id)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">🗑 ลบ</button>
-          </div>
+          <template v-if="editingId === patient.id">
+            <input v-model="editData.name" class="w-full mb-2 p-2 rounded border dark:bg-slate-800" />
+            <input v-model="editData.date" type="date" class="w-full mb-2 p-2 rounded border dark:bg-slate-800" />
+            <select v-model="editData.gender" class="w-full mb-2 p-2 rounded border dark:bg-slate-800">
+              <option value="ชาย">ชาย</option>
+              <option value="หญิง">หญิง</option>
+            </select>
+            <div class="flex gap-2 justify-end">
+              <button @click="saveEdit" class="bg-green-600 text-white px-3 py-1 rounded text-sm">💾 บันทึก</button>
+              <button @click="cancelEdit" class="bg-gray-400 text-white px-3 py-1 rounded text-sm">❌ ยกเลิก</button>
+            </div>
+          </template>
+
+          <template v-else>
+            <div class="flex justify-between items-center">
+              <div>
+                <h2 class="text-lg font-semibold">{{ patient.name }}</h2>
+                <p class="text-sm">📅 วันที่จอง: {{ patient.date }}</p>
+                <p class="text-xs text-gray-500">รหัส: #{{ patient.id }} | เพศ: {{ patient.gender }}</p>
+              </div>
+              <div class="flex gap-2">
+                <button @click="startEdit(patient)" class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded text-sm">✏ แก้ไข</button>
+                <button @click="deletePatient(patient.id)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">🗑 ลบ</button>
+              </div>
+            </div>
+          </template>
         </div>
       </div>
 
@@ -115,7 +151,7 @@ const deletePatient = (id) => {
   font-family: 'Kanit', sans-serif;
 }
 @media print {
-  button, input {
+  button, input, select {
     display: none !important;
   }
 }
